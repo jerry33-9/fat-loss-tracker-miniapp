@@ -17,3 +17,4 @@ server/uploads/
 *.class
 *.jar
 !server/.mvn/wrapper/maven-wrapper.jar
+miniprogram/pages/**/*.js
