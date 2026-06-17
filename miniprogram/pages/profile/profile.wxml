@@ -25,7 +25,7 @@
       <view>
         <view class="text-secondary">已减</view>
         <view class="goal-value highlight">
-          {{currentWeight > 0 ? (goal.startWeight - currentWeight).toFixed(1) : '--'}} kg
+          {{weightLost}} kg
         </view>
       </view>
     </view>

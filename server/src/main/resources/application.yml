@@ -22,7 +22,7 @@ spring:
 # 微信小程序配置（去微信公众平台获取）
 wechat:
   appid: wx06fac73b7d256a6b
-  secret: your-appsecret-here
+  secret: 8b6cef50e47ff4dced517a5fa1e1e152
 
 # 文件上传目录
 upload:

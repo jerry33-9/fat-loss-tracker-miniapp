@@ -14,6 +14,7 @@ Page({
     height: '',
     bmi: 0,
     bmiInfo: { label: '', color: '' },
+    weightLost: '--',
     currentWeight: 0,
     stats: {
       totalWeights: 0,
@@ -49,6 +50,11 @@ Page({
         bmiInfo = bmiCategory(bmi)
       }
 
+      let weightLost = '--'
+      if (hasGoal && goal && currentW > 0) {
+        weightLost = (goal.startWeight - currentW).toFixed(1)
+      }
+
       this.setData({
         hasGoal,
         goal,
@@ -56,6 +62,7 @@ Page({
         height,
         bmi,
         bmiInfo,
+        weightLost,
         stats: stats || { totalWeights: 0, totalDiets: 0, totalExercises: 0, streakDays: 0 }
       })
     } catch (e) {
@@ -110,7 +117,7 @@ Page({
         if (res.confirm) {
           try {
             await deleteGoal()
-            this.setData({ hasGoal: false, goal: null })
+            this.setData({ hasGoal: false, goal: null, weightLost: '--' })
           } catch (e) { console.error(e) }
         }
       }
