@@ -31,7 +31,7 @@
     "packNpmManually": false,
     "packNpmRelationList": []
   },
-  "appid": "your-appid-here",
+  "appid": "wx06fac73b7d256a6b",
   "projectname": "减脂记录",
   "libVersion": "3.3.4",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
