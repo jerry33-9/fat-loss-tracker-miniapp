@@ -1,6 +1,7 @@
 /** 云数据库操作封装 */
 
 const db = wx.cloud.database()
+const _ = db.command
 
 export const weightCollection = db.collection('weights')
 export const dietCollection = db.collection('diets')
@@ -27,7 +28,7 @@ export async function getByDateRange<T>(
 ): Promise<T[]> {
   const res = await collection
     .where({
-      date: wx.db.command.gte(startDate).and(wx.db.Command.lte(endDate))
+      date: _.gte(startDate).and(_.lte(endDate))
     })
     .orderBy('date', 'asc')
     .get()
