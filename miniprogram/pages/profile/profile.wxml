@@ -2,7 +2,8 @@
   <!-- 用户信息 -->
   <view class="card profile-card">
     <view class="flex-row">
-      <image class="avatar" src="{{avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+      <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" wx:if="{{avatarUrl}}" />
+      <view class="avatar avatar-placeholder" wx:else>👤</view>
       <view class="profile-info">
         <view class="nickname">{{nickName || '减脂人'}}</view>
         <view class="text-hint">坚持记录，遇见更好的自己</view>
