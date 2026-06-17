@@ -9,3 +9,11 @@ cloudfunctions/*/node_modules/
 
 # WeChat DevTools
 .wechat_devtools/
+
+# Java
+server/target/
+server/data/
+server/uploads/
+*.class
+*.jar
+!server/.mvn/wrapper/maven-wrapper.jar

@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/fittracker;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+# 微信小程序配置（去微信公众平台获取）
+wechat:
+  appid: wx06fac73b7d256a6b
+  secret: your-appsecret-here
+
+# 文件上传目录
+upload:
+  path: ./uploads

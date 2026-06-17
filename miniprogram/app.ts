@@ -1,14 +1,16 @@
+import { login } from './utils/api'
+
 App<IAppOption>({
   globalData: {
-    userInfo: null
+    userInfo: null,
+    openid: ''
   },
 
   onLaunch() {
-    // 检查登录态
-    wx.login({
-      success: () => {
-        // 将 code 发送给后端换取 openid / token
-      }
+    login().then((openid) => {
+      console.log('登录成功', openid)
+    }).catch((err) => {
+      console.error('登录失败', err)
     })
   }
 })
