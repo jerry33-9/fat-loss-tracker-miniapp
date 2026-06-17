@@ -1,20 +1,14 @@
 App<IAppOption>({
   globalData: {
-    userInfo: null,
-    isCloudInit: false,
-    targetWeight: 0,
-    currentWeight: 0
+    userInfo: null
   },
 
   onLaunch() {
-    if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
-    } else {
-      wx.cloud.init({
-        env: 'your-env-id',
-        traceUser: true
-      })
-      this.globalData.isCloudInit = true
-    }
+    // 检查登录态
+    wx.login({
+      success: () => {
+        // 将 code 发送给后端换取 openid / token
+      }
+    })
   }
 })

@@ -1,5 +1,5 @@
 import { formatDate } from '../../utils/date'
-import { exerciseCollection } from '../../utils/db'
+import { getExercises } from '../../utils/api'
 
 interface GroupedExercise {
   date: string
@@ -21,8 +21,7 @@ Page({
   async loadRecords() {
     wx.showLoading({ title: '加载中...' })
     try {
-      const res = await exerciseCollection.orderBy('date', 'desc').limit(60).get()
-      const list = res.data as ExerciseRecord[]
+      const list = await getExercises({})
 
       const grouped: Record<string, GroupedExercise> = {}
       list.forEach((r) => {

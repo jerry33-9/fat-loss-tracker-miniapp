@@ -1,5 +1,5 @@
-import { today, lastNDays, calcBMI, weightChange, toTarget } from '../../utils/date'
-import { weightCollection, dietCollection, exerciseCollection, goalCollection, getByDate, getByDateRange } from '../../utils/db'
+import { today, calcBMI, weightChange, toTarget } from '../../utils/date'
+import { getWeights, getDiets, getExercises, getGoal } from '../../utils/api'
 
 Page({
   data: {
@@ -26,38 +26,29 @@ Page({
     wx.showLoading({ title: '加载中...' })
 
     try {
-      const [weights, diets, exercises, goals] = await Promise.all([
-        weightCollection.orderBy('date', 'desc').limit(30).get(),
-        getByDate<DietRecord>(dietCollection, date),
-        getByDate<ExerciseRecord>(exerciseCollection, date),
-        goalCollection.limit(1).get()
+      const [weights, diets, exercises, goal] = await Promise.all([
+        getWeights({ limit: 30 }),
+        getDiets({ date }),
+        getExercises({ startDate: date, endDate: date }),
+        getGoal()
       ])
 
-      const weightList = weights.data as WeightRecord[]
-      const currentW = weightList.length > 0 ? weightList[0].weight : 0
-      const prevW = weightList.length > 1 ? weightList[1].weight : 0
-      const targetW = goals.data.length > 0
-        ? (goals.data[0] as UserGoal).targetWeight
-        : 0
+      const currentW = weights.length > 0 ? weights[0].weight : 0
+      const prevW = weights.length > 1 ? weights[1].weight : 0
+      const targetW = goal ? goal.targetWeight : 0
 
-      // 热量汇总
       const totalCal = diets.reduce((sum, d) => sum + d.totalCalories, 0)
       const totalEx = exercises.reduce((sum, e) => sum + e.calories, 0)
 
-      // 趋势数据
-      const trendData = weightList.slice(0, 14).reverse()
+      const trendData = weights.slice(0, 14).reverse()
       const labels = trendData.map(r => r.date.slice(5))
       const values = trendData.map(r => r.weight)
 
-      // 进度百分比
       let progress = 0
       let targetText = ''
-      if (targetW > 0 && currentW > 0) {
-        const startW = goals.data.length > 0
-          ? (goals.data[0] as UserGoal).startWeight
-          : currentW
-        const total = startW - targetW
-        const done = startW - currentW
+      if (targetW > 0 && currentW > 0 && goal) {
+        const total = goal.startWeight - targetW
+        const done = goal.startWeight - currentW
         progress = total > 0 ? Math.min(100, Math.max(0, (done / total) * 100)) : 0
         targetText = toTarget(currentW, targetW)
       }
@@ -72,7 +63,7 @@ Page({
         todayCalories: totalCal,
         todayExercise: totalEx,
         calorieBalance: totalCal - totalEx,
-        bmi: 0, // 需要身高，在个人中心填写
+        bmi: 0,
         trendLabels: labels,
         trendValues: values
       })
@@ -113,7 +104,6 @@ Page({
         const maxV = Math.max(...trendValues) + 1
         const range = maxV - minV || 1
 
-        // Grid
         ctx.strokeStyle = '#EEEEEE'
         ctx.lineWidth = 0.5
         for (let i = 0; i <= 4; i++) {
@@ -129,7 +119,6 @@ Page({
           y: pad.top + chartH - ((v - minV) / range) * chartH
         }))
 
-        // Fill
         ctx.beginPath()
         ctx.moveTo(points[0].x, pad.top + chartH)
         points.forEach(p => ctx.lineTo(p.x, p.y))
@@ -141,7 +130,6 @@ Page({
         ctx.fillStyle = gradient
         ctx.fill()
 
-        // Line
         ctx.beginPath()
         ctx.strokeStyle = '#00B578'
         ctx.lineWidth = 2
@@ -151,7 +139,6 @@ Page({
         })
         ctx.stroke()
 
-        // Dots
         points.forEach(p => {
           ctx.beginPath()
           ctx.arc(p.x, p.y, 3, 0, Math.PI * 2)
@@ -159,7 +146,6 @@ Page({
           ctx.fill()
         })
 
-        // Target line
         if (targetWeight > minV && targetWeight < maxV) {
           const ty = pad.top + chartH - ((targetWeight - minV) / range) * chartH
           ctx.strokeStyle = '#FF4D4F'

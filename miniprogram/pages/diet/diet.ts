@@ -1,5 +1,5 @@
 import { formatDate } from '../../utils/date'
-import { dietCollection } from '../../utils/db'
+import { getDiets } from '../../utils/api'
 
 const MEAL_CONFIG: Record<string, { label: string; emoji: string }> = {
   breakfast: { label: '早餐', emoji: '🌅' },
@@ -27,8 +27,7 @@ Page({
   async loadRecords() {
     wx.showLoading({ title: '加载中...' })
     try {
-      const res = await dietCollection.orderBy('date', 'desc').limit(60).get()
-      const list = res.data as DietRecord[]
+      const list = await getDiets({})
 
       const grouped: Record<string, GroupedMeal> = {}
       list.forEach((r) => {

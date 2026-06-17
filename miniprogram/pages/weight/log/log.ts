@@ -1,5 +1,5 @@
 import { today, formatDate } from '../../../utils/date'
-import { weightCollection, addRecord } from '../../../utils/db'
+import { getWeights, addWeight } from '../../../utils/api'
 
 Page({
   data: {
@@ -16,39 +16,29 @@ Page({
     const d = today()
     this.setData({ date: d, dateLabel: formatDate(d) })
     this.loadLastRecord()
-    this.generateQuickWeights()
   },
 
   async loadLastRecord() {
     try {
-      const res = await weightCollection.orderBy('date', 'desc').limit(1).get()
-      if (res.data.length > 0) {
-        const r = res.data[0] as WeightRecord
+      const weights = await getWeights({ limit: 1 })
+      if (weights.length > 0) {
+        const r = weights[0]
         this.setData({
-          lastRecord: { ...r, dateLabel: formatDate(r.date) }
+          lastRecord: { ...r, dateLabel: formatDate(r.date) },
+          quickWeights: [
+            Math.round((r.weight - 0.5) * 10) / 10,
+            Math.round((r.weight - 0.2) * 10) / 10,
+            r.weight,
+            Math.round((r.weight + 0.2) * 10) / 10,
+            Math.round((r.weight + 0.5) * 10) / 10
+          ]
+        })
+      } else {
+        this.setData({
+          quickWeights: [50, 55, 60, 65, 70, 75, 80, 85, 90]
         })
       }
     } catch (e) { /* ignore */ }
-  },
-
-  generateQuickWeights() {
-    const { lastRecord } = this.data
-    if (lastRecord) {
-      const base = lastRecord.weight
-      this.setData({
-        quickWeights: [
-          Math.round((base - 0.5) * 10) / 10,
-          Math.round((base - 0.2) * 10) / 10,
-          base,
-          Math.round((base + 0.2) * 10) / 10,
-          Math.round((base + 0.5) * 10) / 10
-        ]
-      })
-    } else {
-      this.setData({
-        quickWeights: [50, 55, 60, 65, 70, 75, 80, 85, 90]
-      })
-    }
   },
 
   onDateChange(e: any) {
@@ -78,11 +68,10 @@ Page({
 
     wx.showLoading({ title: '保存中...' })
     try {
-      await addRecord<WeightRecord>(weightCollection, {
+      await addWeight({
         weight,
         date: this.data.date,
-        note: this.data.note,
-        createdAt: Date.now()
+        note: this.data.note
       })
       wx.showToast({ title: '已保存', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 1500)

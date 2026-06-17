@@ -1,5 +1,5 @@
-import { formatDate, calcBMI, weightChange } from '../../utils/date'
-import { weightCollection, goalCollection } from '../../utils/db'
+import { formatDate, weightChange } from '../../utils/date'
+import { getWeights, getGoal } from '../../utils/api'
 
 Page({
   data: {
@@ -18,28 +18,25 @@ Page({
     wx.showLoading({ title: '加载中...' })
 
     try {
-      const [weightRes, goalRes] = await Promise.all([
-        weightCollection.orderBy('date', 'desc').limit(60).get(),
-        goalCollection.limit(1).get()
+      const [weights, goal] = await Promise.all([
+        getWeights({ limit: 60 }),
+        getGoal()
       ])
 
-      const list = weightRes.data as WeightRecord[]
-      const targetW = goalRes.data.length > 0
-        ? (goalRes.data[0] as UserGoal).targetWeight
-        : 0
+      const targetW = goal ? goal.targetWeight : 0
 
-      const records = list.map((r, i) => ({
+      const records = weights.map((r, i) => ({
         ...r,
         dateLabel: formatDate(r.date),
-        diff: i < list.length - 1
-          ? Number(weightChange(r.weight, list[i + 1].weight))
+        diff: i < weights.length - 1
+          ? Number(weightChange(r.weight, weights[i + 1].weight))
           : undefined
       }))
 
-      const trendData = list.slice(0, 14).reverse()
+      const trendData = weights.slice(0, 14).reverse()
       this.setData({
         records,
-        totalRecords: list.length,
+        totalRecords: weights.length,
         trendValues: trendData.map(r => r.weight),
         trendLabels: trendData.map(r => r.date.slice(5)),
         targetWeight: targetW

@@ -1,5 +1,5 @@
 import { calcBMI, bmiCategory } from '../../utils/date'
-import { weightCollection, dietCollection, exerciseCollection, goalCollection } from '../../utils/db'
+import { getWeights, getGoal, setGoal, deleteGoal, getStats } from '../../utils/api'
 
 Page({
   data: {
@@ -29,22 +29,16 @@ Page({
 
   async loadProfile() {
     try {
-      const [weightCount, dietCount, exCount, goalRes] = await Promise.all([
-        weightCollection.count(),
-        dietCollection.count(),
-        exerciseCollection.count(),
-        goalCollection.limit(1).get()
+      const [goal, stats] = await Promise.all([
+        getGoal(),
+        getStats()
       ])
 
-      const hasGoal = goalRes.data.length > 0
-      const goal = hasGoal ? goalRes.data[0] as UserGoal : null
-
-      // 获取最新体重
+      const hasGoal = goal !== null
       let currentW = 0
       if (hasGoal && goal) {
-        const wRes = await weightCollection.orderBy('date', 'desc').limit(1).get()
-        if (wRes.data.length > 0) currentW = (wRes.data[0] as WeightRecord).weight
-        else currentW = goal.startWeight
+        const weights = await getWeights({ limit: 1 })
+        currentW = weights.length > 0 ? weights[0].weight : goal.startWeight
       }
 
       const height = wx.getStorageSync('height') || ''
@@ -58,18 +52,11 @@ Page({
       this.setData({
         hasGoal,
         goal,
-        startWeight: hasGoal ? '' : '',
-        targetWeight: hasGoal ? '' : String(goal?.targetWeight || ''),
         currentWeight: currentW,
         height,
         bmi,
         bmiInfo,
-        stats: {
-          totalWeights: weightCount.total,
-          totalDiets: dietCount.total,
-          totalExercises: exCount.total,
-          streakDays: 0
-        }
+        stats: stats || { totalWeights: 0, totalDiets: 0, totalExercises: 0, streakDays: 0 }
       })
     } catch (e) {
       console.error(e)
@@ -98,18 +85,12 @@ Page({
       return
     }
 
-    const weeklyTarget = Number(this.data.weeklyOptions[this.data.weeklyIndex])
-
     wx.showLoading({ title: '保存中...' })
     try {
-      await goalCollection.add({
-        data: {
-          targetWeight: tw,
-          startWeight: sw,
-          weeklyTarget,
-          startDate: new Date().toISOString().slice(0, 10),
-          updatedAt: Date.now()
-        }
+      await setGoal({
+        targetWeight: tw,
+        startWeight: sw,
+        weeklyTarget: Number(this.data.weeklyOptions[this.data.weeklyIndex])
       })
       wx.showToast({ title: '目标已设定', icon: 'success' })
       this.loadProfile()
@@ -122,21 +103,17 @@ Page({
   },
 
   editGoal() {
-    if (this.data.goal) {
-      wx.showModal({
-        title: '重置目标',
-        content: '重置后将清除当前目标数据，确定继续？',
-        success: async (res) => {
-          if (res.confirm && this.data.goal?._id) {
-            try {
-              await goalCollection.doc(this.data.goal._id).remove()
-              this.setData({ hasGoal: false, goal: null })
-            } catch (e) {
-              console.error(e)
-            }
-          }
+    wx.showModal({
+      title: '重置目标',
+      content: '重置后将清除当前目标数据，确定继续？',
+      success: async (res) => {
+        if (res.confirm) {
+          try {
+            await deleteGoal()
+            this.setData({ hasGoal: false, goal: null })
+          } catch (e) { console.error(e) }
         }
-      })
-    }
+      }
+    })
   }
 })

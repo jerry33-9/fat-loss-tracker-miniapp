@@ -1,5 +1,5 @@
 import { today, formatDate } from '../../../utils/date'
-import { dietCollection, addRecord } from '../../../utils/db'
+import { addDiet, uploadFile } from '../../../utils/api'
 
 interface FoodEdit {
   name: string
@@ -23,7 +23,6 @@ Page({
   onLoad() {
     const d = today()
     this.setData({ date: d, dateLabel: formatDate(d) })
-    // 根据时间自动选餐次
     const hour = new Date().getHours()
     if (hour < 10) this.setData({ mealType: 'breakfast' })
     else if (hour < 14) this.setData({ mealType: 'lunch' })
@@ -76,13 +75,10 @@ Page({
       const tempPath = res.tempFiles[0].tempFilePath
 
       wx.showLoading({ title: '上传中...' })
-      const cloudRes = await wx.cloud.uploadFile({
-        cloudPath: `diet/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`,
-        filePath: tempPath
-      })
+      const url = await uploadFile(tempPath)
 
       this.setData({
-        photoUrls: [...this.data.photoUrls, cloudRes.fileID]
+        photoUrls: [...this.data.photoUrls, url]
       })
     } catch (e) {
       console.error(e)
@@ -111,7 +107,7 @@ Page({
 
     wx.showLoading({ title: '保存中...' })
     try {
-      await addRecord<DietRecord>(dietCollection, {
+      await addDiet({
         mealType: this.data.mealType,
         date: this.data.date,
         foods: validFoods.map(f => ({
@@ -121,8 +117,7 @@ Page({
         })),
         totalCalories: validFoods.reduce((s, f) => s + (f.calories || 0), 0),
         photoUrls: this.data.photoUrls,
-        note: this.data.note,
-        createdAt: Date.now()
+        note: this.data.note
       })
       wx.showToast({ title: '已保存', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 1500)
