@@ -1,0 +1,11 @@
+node_modules/
+miniprogram_npm/
+.cloud/
+*.log
+.DS_Store
+
+# Cloud function dependencies
+cloudfunctions/*/node_modules/
+
+# WeChat DevTools
+.wechat_devtools/

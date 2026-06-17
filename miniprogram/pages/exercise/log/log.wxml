@@ -1,0 +1,80 @@
+<view class="container">
+  <view class="card">
+    <view class="input-group">
+      <view class="input-label">日期</view>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="input-value">{{dateLabel}}</view>
+      </picker>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">运动类型</view>
+      <view class="type-grid">
+        <view
+          class="type-item {{exerciseType === item ? 'active' : ''}}"
+          wx:for="{{commonTypes}}"
+          wx:key="*this"
+          data-type="{{item}}"
+          bindtap="selectType"
+        >{{item}}</view>
+      </view>
+      <input
+        class="custom-type"
+        placeholder="自定义类型"
+        value="{{customType}}"
+        bindinput="onCustomType"
+      />
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">时长（分钟）</view>
+      <view class="duration-row">
+        <input
+          class="duration-input"
+          type="digit"
+          placeholder="0"
+          value="{{duration}}"
+          bindinput="onDurationInput"
+        />
+        <text class="duration-unit">分钟</text>
+      </view>
+      <view class="quick-durations">
+        <view
+          class="quick-dur {{item === selectedDur ? 'active' : ''}}"
+          wx:for="{{quickDurations}}"
+          wx:key="*this"
+          data-dur="{{item}}"
+          bindtap="setDuration"
+        >{{item}}分钟</view>
+      </view>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">消耗热量 (kcal)</view>
+      <input
+        class="cal-input"
+        type="digit"
+        placeholder="输入消耗热量"
+        value="{{calories}}"
+        bindinput="onCalInput"
+      />
+      <view class="est-cal text-hint" wx:if="{{estCalories > 0}}">
+        参考：{{exerciseType}} {{duration}}分钟 ≈ {{estCalories}} kcal
+      </view>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">备注</view>
+      <textarea
+        class="note-input"
+        placeholder="运动感受（选填）"
+        value="{{note}}"
+        bindinput="onNoteInput"
+        maxlength="100"
+        auto-height
+      />
+    </view>
+
+    <button class="btn-primary" bindtap="save" style="margin-top: 32rpx;">保存</button>
+  </view>
+</view>

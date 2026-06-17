@@ -1,0 +1,97 @@
+.input-group {
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.input-label {
+  font-size: 28rpx;
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.input-value {
+  font-size: 28rpx;
+  padding: 16rpx 0;
+}
+
+.type-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.type-item {
+  padding: 12rpx 24rpx;
+  background: var(--bg-page);
+  border-radius: 24rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.type-item.active {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+.custom-type {
+  font-size: 26rpx;
+  padding: 12rpx 0;
+  margin-top: 12rpx;
+  color: var(--text-secondary);
+}
+
+.duration-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.duration-input {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: var(--primary);
+  width: 200rpx;
+}
+
+.duration-unit {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-left: 8rpx;
+}
+
+.quick-durations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 16rpx;
+}
+
+.quick-dur {
+  padding: 8rpx 24rpx;
+  background: var(--bg-page);
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.quick-dur.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.cal-input {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.est-cal {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+}
+
+.note-input {
+  width: 100%;
+  min-height: 80rpx;
+  font-size: 28rpx;
+  padding: 16rpx 0;
+}

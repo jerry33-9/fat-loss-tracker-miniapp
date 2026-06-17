@@ -1,0 +1,68 @@
+.date-header {
+  font-size: 32rpx;
+  font-weight: 600;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--border);
+  margin-bottom: 16rpx;
+}
+
+.meal-section {
+  margin-bottom: 20rpx;
+  padding: 16rpx;
+  background: var(--bg-page);
+  border-radius: 12rpx;
+}
+
+.meal-type {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  margin-bottom: 12rpx;
+}
+
+.meal-emoji {
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+
+.meal-calories {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.food-list {
+  margin-bottom: 12rpx;
+}
+
+.food-item {
+  padding: 8rpx 0;
+}
+
+.food-name {
+  font-size: 26rpx;
+}
+
+.food-amount {
+  font-size: 24rpx;
+}
+
+.food-cal {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.meal-photos {
+  display: flex;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.meal-photo {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  background: #EEE;
+}

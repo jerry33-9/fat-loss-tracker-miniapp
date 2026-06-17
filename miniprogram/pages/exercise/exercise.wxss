@@ -1,0 +1,44 @@
+.date-header {
+  font-size: 32rpx;
+  font-weight: 600;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--border);
+  margin-bottom: 16rpx;
+}
+
+.exercise-item {
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+
+.exercise-item:last-of-type {
+  border-bottom: none;
+}
+
+.exercise-type {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.exercise-detail {
+  font-size: 24rpx;
+  margin-top: 4rpx;
+}
+
+.exercise-cal {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.date-summary {
+  text-align: right;
+  padding-top: 16rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+}
+
+.summary-val {
+  color: var(--primary);
+  font-weight: 600;
+}

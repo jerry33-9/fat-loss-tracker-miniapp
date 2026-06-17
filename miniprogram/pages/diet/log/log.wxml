@@ -1,0 +1,117 @@
+<view class="container">
+  <view class="card">
+    <view class="input-group">
+      <view class="input-label">日期</view>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="input-value">{{dateLabel}}</view>
+      </picker>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">餐次</view>
+      <view class="meal-tabs">
+        <view
+          class="meal-tab {{mealType === 'breakfast' ? 'active' : ''}}"
+          bindtap="setMealType"
+          data-type="breakfast"
+        >早餐</view>
+        <view
+          class="meal-tab {{mealType === 'lunch' ? 'active' : ''}}"
+          bindtap="setMealType"
+          data-type="lunch"
+        >午餐</view>
+        <view
+          class="meal-tab {{mealType === 'dinner' ? 'active' : ''}}"
+          bindtap="setMealType"
+          data-type="dinner"
+        >晚餐</view>
+        <view
+          class="meal-tab {{mealType === 'snack' ? 'active' : ''}}"
+          bindtap="setMealType"
+          data-type="snack"
+        >加餐</view>
+      </view>
+    </view>
+
+    <!-- 食物列表 -->
+    <view class="input-group">
+      <view class="flex-between">
+        <view class="input-label">食物</view>
+        <button class="btn-add-food" bindtap="addFood" size="mini">+ 添加</button>
+      </view>
+
+      <view class="food-edit-list">
+        <view class="food-edit-item" wx:for="{{foods}}" wx:key="index">
+          <view class="food-edit-row flex-between">
+            <input
+              class="food-name-input"
+              placeholder="食物名称"
+              value="{{item.name}}"
+              data-index="{{index}}"
+              data-field="name"
+              bindinput="onFoodChange"
+            />
+            <input
+              class="food-amount-input"
+              placeholder="份量"
+              value="{{item.amount}}"
+              data-index="{{index}}"
+              data-field="amount"
+              bindinput="onFoodChange"
+            />
+          </view>
+          <view class="food-edit-row flex-between">
+            <input
+              class="food-cal-input"
+              type="digit"
+              placeholder="热量(kcal)"
+              value="{{item.calories}}"
+              data-index="{{index}}"
+              data-field="calories"
+              bindinput="onFoodChange"
+            />
+            <view class="food-delete" data-index="{{index}}" bindtap="removeFood">删除</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 拍照 -->
+    <view class="input-group">
+      <view class="input-label">拍照</view>
+      <view class="photo-area">
+        <image
+          wx:for="{{photoUrls}}"
+          wx:key="*this"
+          src="{{item}}"
+          mode="aspectFill"
+          class="photo-thumb"
+          bindtap="previewPhoto"
+          data-url="{{item}}"
+        />
+        <view class="photo-add" bindtap="takePhoto" wx:if="{{photoUrls.length < 4}}">
+          <text class="photo-add-icon">+</text>
+          <text class="photo-add-text">拍照</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="input-group">
+      <view class="input-label">备注</view>
+      <textarea
+        class="note-input"
+        placeholder="这顿吃了什么感觉（选填）"
+        value="{{note}}"
+        bindinput="onNoteInput"
+        maxlength="100"
+        auto-height
+      />
+    </view>
+
+    <view class="calorie-summary" wx:if="{{totalCalories > 0}}">
+      合计 <text class="cal-value">{{totalCalories}}</text> kcal
+    </view>
+
+    <button class="btn-primary" bindtap="save" style="margin-top: 32rpx;">保存</button>
+  </view>
+</view>

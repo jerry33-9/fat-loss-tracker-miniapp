@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="flex-between mb-24">
+    <view>共 {{totalRecords}} 条记录</view>
+    <button class="btn-outline" bindtap="goLog" size="mini">+ 记饮食</button>
+  </view>
+
+  <block wx:for="{{groupedRecords}}" wx:key="date">
+    <view class="card">
+      <view class="date-header">{{item.dateLabel}}</view>
+      <view class="meal-section" wx:for="{{item.meals}}" wx:for-item="meal" wx:key="mealType">
+        <view class="meal-type">
+          <text class="meal-emoji">{{meal.emoji}}</text>
+          <text>{{meal.label}}</text>
+          <text class="meal-calories">{{meal.totalCalories}} kcal</text>
+        </view>
+        <view class="food-list">
+          <view class="food-item flex-between" wx:for="{{meal.foods}}" wx:for-item="food" wx:key="name">
+            <view>
+              <text class="food-name">{{food.name}}</text>
+              <text class="food-amount text-hint"> {{food.amount}}</text>
+            </view>
+            <text class="food-cal">{{food.calories}} kcal</text>
+          </view>
+        </view>
+        <view class="meal-photos" wx:if="{{meal.photoUrls.length > 0}}">
+          <image
+            wx:for="{{meal.photoUrls}}"
+            wx:key="*this"
+            src="{{item}}"
+            mode="aspectFill"
+            class="meal-photo"
+            bindtap="previewPhoto"
+            data-url="{{item}}"
+          />
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:if="{{totalRecords === 0}}">
+    <text>还没有饮食记录</text>
+    <button class="btn-primary mt-24" bindtap="goLog">记录第一餐</button>
+  </view>
+</view>

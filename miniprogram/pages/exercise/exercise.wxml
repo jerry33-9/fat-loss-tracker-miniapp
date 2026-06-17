@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="flex-between mb-24">
+    <view>共 {{totalRecords}} 条记录</view>
+    <button class="btn-outline" bindtap="goLog" size="mini">+ 记运动</button>
+  </view>
+
+  <block wx:for="{{groupedRecords}}" wx:key="date">
+    <view class="card">
+      <view class="date-header">{{item.dateLabel}}</view>
+      <view class="exercise-item flex-between" wx:for="{{item.records}}" wx:key="_id">
+        <view>
+          <view class="exercise-type">{{item.type}}</view>
+          <view class="exercise-detail text-hint">
+            {{item.duration}}分钟
+            <text wx:if="{{item.note}}"> · {{item.note}}</text>
+          </view>
+        </view>
+        <view class="exercise-cal">{{item.calories}} kcal</view>
+      </view>
+      <view class="date-summary" wx:if="{{item.totalCalories > 0}}">
+        合计消耗 <text class="summary-val">{{item.totalCalories}}</text> kcal
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-state" wx:if="{{totalRecords === 0}}">
+    <text>还没有运动记录</text>
+    <button class="btn-primary mt-24" bindtap="goLog">记录运动</button>
+  </view>
+</view>
