@@ -1,125 +1,54 @@
-.weight-card {
-  background: linear-gradient(135deg, #00B578, #00D68F);
-  color: #FFFFFF;
-}
-
-.weight-card .text-hint {
-  color: rgba(255,255,255,0.75);
-  font-size: 24rpx;
-}
-
-.weight-value {
-  font-size: 72rpx;
-  font-weight: 700;
-  line-height: 1.1;
-  margin-top: 8rpx;
-}
-
-.weight-unit {
+.date-header {
   font-size: 32rpx;
-  font-weight: 400;
-}
-
-.weight-change {
-  font-size: 36rpx;
   font-weight: 600;
-  text-align: right;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--border);
+  margin-bottom: 16rpx;
 }
 
-.weight-change.up { color: #FF6B6B; }
-.weight-change.down { color: #A8F0D0; }
-
-.change-label {
-  font-size: 20rpx;
-  font-weight: 400;
-  opacity: 0.8;
+.workout-item {
+  padding-bottom: 16rpx;
+  margin-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--border);
 }
 
-.progress-bar {
-  flex: 1;
-  height: 8rpx;
-  background: rgba(255,255,255,0.3);
-  border-radius: 4rpx;
-  overflow: hidden;
+.workout-item:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
 }
 
-.progress-fill {
-  height: 100%;
-  background: #FFFFFF;
-  border-radius: 4rpx;
-  transition: width 0.5s ease;
+.wo-exercise {
+  padding: 8rpx 0;
 }
 
-.btn-record {
-  margin-top: 20rpx;
-  background: rgba(255,255,255,0.25);
-  color: #FFFFFF;
-  font-size: 26rpx;
-  padding: 12rpx 0;
-  border-radius: 20rpx;
-  border: none;
+.wo-ex-name {
+  font-size: 28rpx;
+  font-weight: 500;
 }
 
-.overview-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24rpx;
-}
-
-.overview-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20rpx 0;
-  background: var(--bg-page);
-  border-radius: 12rpx;
-}
-
-.overview-icon {
-  font-size: 40rpx;
-  margin-bottom: 8rpx;
-}
-
-.overview-num {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.overview-label {
-  font-size: 22rpx;
-  color: var(--text-hint);
-  margin-top: 4rpx;
-}
-
-.chart-canvas {
-  width: 100%;
-  height: 360rpx;
-}
-
-.quick-actions {
-  display: flex;
-  gap: 24rpx;
-  margin-top: 8rpx;
-}
-
-.action-btn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 28rpx 0;
-  background: var(--bg-card);
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
-}
-
-.action-icon {
-  font-size: 48rpx;
-  margin-bottom: 8rpx;
-}
-
-.action-btn text {
+.wo-ex-detail {
   font-size: 24rpx;
-  color: var(--text-primary);
+  margin-left: 12rpx;
+}
+
+.wo-footer {
+  padding-top: 8rpx;
+}
+
+.wo-note {
+  font-size: 24rpx;
+  flex: 1;
+}
+
+.wo-dur {
+  font-size: 24rpx;
+  color: var(--primary);
+}
+
+.date-summary {
+  text-align: right;
+  padding-top: 16rpx;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  border-top: 1rpx solid var(--border);
 }

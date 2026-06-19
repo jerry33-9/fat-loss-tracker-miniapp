@@ -1,59 +1,15 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/weight/weight",
-    "pages/weight/log/log",
-    "pages/diet/diet",
-    "pages/diet/log/log",
-    "pages/exercise/exercise",
-    "pages/exercise/log/log",
-    "pages/profile/profile"
+    "pages/exercise/log/log"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#00B578",
-    "navigationBarTitleText": "减脂记录",
+    "navigationBarBackgroundColor": "#1A1A2E",
+    "navigationBarTitleText": "训练日志",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F5F5F5"
   },
-  "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#00B578",
-    "backgroundColor": "#FFFFFF",
-    "borderStyle": "black",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/tab-home.png",
-        "selectedIconPath": "images/tab-home-active.png"
-      },
-      {
-        "pagePath": "pages/weight/weight",
-        "text": "体重",
-        "iconPath": "images/tab-weight.png",
-        "selectedIconPath": "images/tab-weight-active.png"
-      },
-      {
-        "pagePath": "pages/diet/diet",
-        "text": "饮食",
-        "iconPath": "images/tab-diet.png",
-        "selectedIconPath": "images/tab-diet-active.png"
-      },
-      {
-        "pagePath": "pages/exercise/exercise",
-        "text": "运动",
-        "iconPath": "images/tab-exercise.png",
-        "selectedIconPath": "images/tab-exercise-active.png"
-      },
-      {
-        "pagePath": "pages/profile/profile",
-        "text": "我的",
-        "iconPath": "images/tab-profile.png",
-        "selectedIconPath": "images/tab-profile-active.png"
-      }
-    ]
-  },
-  "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
 }

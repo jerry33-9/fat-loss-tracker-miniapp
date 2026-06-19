@@ -1,10 +1,7 @@
 import { login } from './utils/api'
 
 App<IAppOption>({
-  globalData: {
-    userInfo: null,
-    openid: ''
-  },
+  globalData: { openid: '' },
 
   onLaunch() {
     login().then((openid) => {

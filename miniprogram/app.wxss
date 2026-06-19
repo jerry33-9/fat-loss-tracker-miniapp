@@ -1,9 +1,9 @@
 page {
-  --primary: #00B578;
-  --primary-light: #E8F8F2;
-  --danger: #FF4D4F;
-  --warning: #FAAD14;
-  --text-primary: #333333;
+  --primary: #16213E;
+  --primary-light: #E8EDF5;
+  --accent: #0F3460;
+  --danger: #E94560;
+  --text-primary: #1A1A2E;
   --text-secondary: #666666;
   --text-hint: #999999;
   --bg-page: #F5F5F5;
@@ -31,13 +31,6 @@ page {
   box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
 }
 
-.card-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 16rpx;
-}
-
 .btn-primary {
   background: var(--primary);
   color: #FFFFFF;
@@ -45,10 +38,6 @@ page {
   font-size: 32rpx;
   padding: 20rpx 48rpx;
   border: none;
-}
-
-.btn-primary:active {
-  opacity: 0.8;
 }
 
 .btn-outline {
@@ -60,38 +49,15 @@ page {
   padding: 16rpx 32rpx;
 }
 
-.text-secondary {
-  color: var(--text-secondary);
-}
-
-.text-hint {
-  color: var(--text-hint);
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .flex-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.mt-16 { margin-top: 16rpx; }
+.text-hint { color: var(--text-hint); }
+.text-secondary { color: var(--text-secondary); }
 .mt-24 { margin-top: 24rpx; }
-.mb-16 { margin-bottom: 16rpx; }
 .mb-24 { margin-bottom: 24rpx; }
 
 .empty-state {
@@ -101,11 +67,4 @@ page {
   justify-content: center;
   padding: 80rpx 0;
   color: var(--text-hint);
-}
-
-.empty-state image {
-  width: 200rpx;
-  height: 200rpx;
-  margin-bottom: 24rpx;
-  opacity: 0.4;
 }

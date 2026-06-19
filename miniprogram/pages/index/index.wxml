@@ -1,82 +1,35 @@
 <view class="container">
-  <!-- 体重卡片 -->
-  <view class="card weight-card">
-    <view class="flex-between">
-      <view>
-        <view class="text-hint">今日体重</view>
-        <view class="weight-value">
-          {{currentWeight > 0 ? currentWeight : '--'}}
-          <text class="weight-unit">kg</text>
+  <view class="flex-between mb-24">
+    <view>共 {{totalRecords}} 条记录</view>
+    <button class="btn-outline" bindtap="goLog" size="mini">+ 记训练</button>
+  </view>
+
+  <block wx:for="{{groupedRecords}}" wx:key="date">
+    <view class="card">
+      <view class="date-header">{{item.dateLabel}}</view>
+      <view class="workout-item" wx:for="{{item.records}}" wx:key="_id">
+        <view class="wo-exercise" wx:for="{{item.exercises}}" wx:for-item="ex" wx:for-index="exi" wx:key="name">
+          <view class="wo-ex-row flex-between">
+            <view>
+              <text class="wo-ex-name">{{ex.name}}</text>
+              <text class="wo-ex-detail text-hint" wx:if="{{ex.sets > 0}}">{{ex.sets}}组×{{ex.reps}}次</text>
+              <text class="wo-ex-detail text-hint" wx:if="{{ex.weight}}">{{ex.weight}}kg</text>
+            </view>
+          </view>
+        </view>
+        <view class="wo-footer flex-between" wx:if="{{item.duration > 0 || item.note}}">
+          <view class="wo-note text-hint" wx:if="{{item.note}}">{{item.note}}</view>
+          <view class="wo-dur" wx:if="{{item.duration > 0}}">{{item.duration}}分钟</view>
         </view>
       </view>
-      <view class="weight-change {{weightDiff > 0 ? 'up' : 'down'}}" wx:if="{{previousWeight > 0}}">
-        {{weightDiff > 0 ? '+' : ''}}{{weightDiff}} kg
-        <view class="change-label">较昨日</view>
+      <view class="date-summary">
+        {{item.exerciseCount}} 个动作 · {{item.totalSets}} 组 · {{item.totalCalories}} kcal
       </view>
     </view>
-    <view class="mt-16 flex-between" wx:if="{{targetWeight > 0}}">
-      <view class="progress-bar">
-        <view class="progress-fill" style="width: {{progressPercent}}%"></view>
-      </view>
-      <text class="text-hint" style="margin-left: 16rpx; font-size: 24rpx;">{{targetText}}</text>
-    </view>
-    <button class="btn-record" bindtap="goWeightLog">记录体重</button>
-  </view>
+  </block>
 
-  <!-- 今日概览 -->
-  <view class="card">
-    <view class="card-title">今日概览</view>
-    <view class="overview-grid">
-      <view class="overview-item" bindtap="goDiet">
-        <view class="overview-icon">🍽️</view>
-        <view class="overview-num">{{todayCalories || 0}}</view>
-        <view class="overview-label">摄入 (kcal)</view>
-      </view>
-      <view class="overview-item" bindtap="goExercise">
-        <view class="overview-icon">🏃</view>
-        <view class="overview-num">{{todayExercise || 0}}</view>
-        <view class="overview-label">消耗 (kcal)</view>
-      </view>
-      <view class="overview-item">
-        <view class="overview-icon">⚖️</view>
-        <view class="overview-num">{{calorieBalance >= 0 ? '+' : ''}}{{calorieBalance || 0}}</view>
-        <view class="overview-label">热量差</view>
-      </view>
-      <view class="overview-item" bindtap="goWeight">
-        <view class="overview-icon">📊</view>
-        <view class="overview-num">{{bmi > 0 ? bmi : '--'}}</view>
-        <view class="overview-label">BMI</view>
-      </view>
-    </view>
-  </view>
-
-  <!-- 近期体重趋势 -->
-  <view class="card">
-    <view class="card-title">体重趋势</view>
-    <canvas
-      type="2d"
-      id="weightChart"
-      class="chart-canvas"
-      wx:if="{{trendValues.length > 0}}"
-    ></canvas>
-    <view class="empty-state" wx:else>
-      <text>记录体重后将显示趋势图</text>
-    </view>
-  </view>
-
-  <!-- 快捷入口 -->
-  <view class="quick-actions">
-    <view class="action-btn" bindtap="goDietLog">
-      <view class="action-icon">📝</view>
-      <text>记饮食</text>
-    </view>
-    <view class="action-btn" bindtap="goExerciseLog">
-      <view class="action-icon">💪</view>
-      <text>记运动</text>
-    </view>
-    <view class="action-btn" bindtap="goWeightLog">
-      <view class="action-icon">⚖️</view>
-      <text>记体重</text>
-    </view>
+  <view class="empty-state" wx:if="{{totalRecords === 0}}">
+    <text>还没有训练记录</text>
+    <button class="btn-primary mt-24" bindtap="goLog">开始记录</button>
   </view>
 </view>
