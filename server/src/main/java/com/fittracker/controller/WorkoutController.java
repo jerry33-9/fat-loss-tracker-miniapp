@@ -1,24 +1,24 @@
 package com.fittracker.controller;
 
 import com.fittracker.model.ApiResponse;
-import com.fittracker.model.ExerciseRecord;
-import com.fittracker.service.ExerciseService;
+import com.fittracker.model.WorkoutRecord;
+import com.fittracker.service.WorkoutService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/exercises")
-public class ExerciseController {
+@RequestMapping("/api/workouts")
+public class WorkoutController {
 
-    private final ExerciseService service;
+    private final WorkoutService service;
 
-    public ExerciseController(ExerciseService service) {
+    public WorkoutController(WorkoutService service) {
         this.service = service;
     }
 
     @GetMapping
-    public ApiResponse<List<ExerciseRecord>> list(
+    public ApiResponse<List<WorkoutRecord>> list(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
             @RequestHeader("X-Openid") String openid) {
@@ -29,7 +29,7 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public ApiResponse<Void> add(@RequestBody ExerciseRecord record,
+    public ApiResponse<Void> add(@RequestBody WorkoutRecord record,
                                   @RequestHeader("X-Openid") String openid) {
         service.add(openid, record);
         return ApiResponse.ok(null);

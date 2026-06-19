@@ -10,5 +10,6 @@ interface IAppOption {
 
 type WeightRecord = import('./utils/types').WeightRecord
 type DietRecord = import('./utils/types').DietRecord
-type ExerciseRecord = import('./utils/types').ExerciseRecord
+type WorkoutRecord = import('./utils/types').WorkoutRecord
+type WorkoutExercise = import('./utils/types').WorkoutExercise
 type UserGoal = import('./utils/types').UserGoal

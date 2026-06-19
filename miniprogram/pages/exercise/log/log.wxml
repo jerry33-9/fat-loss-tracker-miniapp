@@ -7,72 +7,58 @@
       </picker>
     </view>
 
-    <view class="input-group">
-      <view class="input-label">运动类型</view>
-      <view class="type-grid">
-        <view
-          class="type-item {{exerciseType === item ? 'active' : ''}}"
-          wx:for="{{commonTypes}}"
-          wx:key="*this"
-          data-type="{{item}}"
-          bindtap="selectType"
-        >{{item}}</view>
+    <!-- 动作列表 -->
+    <view class="input-group" wx:for="{{exercises}}" wx:key="index">
+      <view class="flex-between" style="margin-bottom: 16rpx;">
+        <view class="ex-index">动作 {{index + 1}}</view>
+        <view class="ex-delete" bindtap="removeExercise" data-index="{{index}}" wx:if="{{exercises.length > 1}}">删除</view>
       </view>
-      <input
-        class="custom-type"
-        placeholder="自定义类型"
-        value="{{customType}}"
-        bindinput="onCustomType"
-      />
-    </view>
 
-    <view class="input-group">
-      <view class="input-label">时长（分钟）</view>
-      <view class="duration-row">
-        <input
-          class="duration-input"
-          type="digit"
-          placeholder="0"
-          value="{{duration}}"
-          bindinput="onDurationInput"
-        />
-        <text class="duration-unit">分钟</text>
+      <view class="ex-row">
+        <input class="ex-name" placeholder="动作名称" value="{{item.name}}" data-index="{{index}}" data-field="name" bindinput="onExChange" />
+        <picker range="{{commonMoves}}" value="{{item.moveIndex}}" bindchange="onMovePick" data-index="{{index}}">
+          <view class="ex-pick">常用▾</view>
+        </picker>
       </view>
-      <view class="quick-durations">
-        <view
-          class="quick-dur {{item === selectedDur ? 'active' : ''}}"
-          wx:for="{{quickDurations}}"
-          wx:key="*this"
-          data-dur="{{item}}"
-          bindtap="setDuration"
-        >{{item}}分钟</view>
+
+      <view class="ex-row ex-nums">
+        <view class="num-block">
+          <text class="num-label">组数</text>
+          <view class="num-stepper">
+            <view class="num-btn" data-index="{{index}}" data-field="sets" data-delta="-1" bindtap="adjustNum">−</view>
+            <input class="num-input" type="number" value="{{item.sets}}" data-index="{{index}}" data-field="sets" bindinput="onExChange" />
+            <view class="num-btn" data-index="{{index}}" data-field="sets" data-delta="1" bindtap="adjustNum">+</view>
+          </view>
+        </view>
+        <view class="num-block">
+          <text class="num-label">次数</text>
+          <view class="num-stepper">
+            <view class="num-btn" data-index="{{index}}" data-field="reps" data-delta="-1" bindtap="adjustNum">−</view>
+            <input class="num-input" type="number" value="{{item.reps}}" data-index="{{index}}" data-field="reps" bindinput="onExChange" />
+            <view class="num-btn" data-index="{{index}}" data-field="reps" data-delta="1" bindtap="adjustNum">+</view>
+          </view>
+        </view>
+        <view class="num-block">
+          <text class="num-label">重量kg</text>
+          <input class="num-input weight-input" type="digit" placeholder="--" value="{{item.weight}}" data-index="{{index}}" data-field="weight" bindinput="onExChange" />
+        </view>
       </view>
     </view>
 
+    <button class="btn-add-ex" bindtap="addExercise" size="mini">+ 添加动作</button>
+
     <view class="input-group">
-      <view class="input-label">消耗热量 (kcal)</view>
-      <input
-        class="cal-input"
-        type="digit"
-        placeholder="输入消耗热量"
-        value="{{calories}}"
-        bindinput="onCalInput"
-      />
-      <view class="est-cal text-hint" wx:if="{{estCalories > 0}}">
-        参考：{{exerciseType}} {{duration}}分钟 ≈ {{estCalories}} kcal
-      </view>
+      <view class="input-label">总时长（分钟）</view>
+      <input class="duration-input" type="digit" placeholder="0" value="{{duration}}" bindinput="onDurationInput" />
     </view>
 
     <view class="input-group">
       <view class="input-label">备注</view>
-      <textarea
-        class="note-input"
-        placeholder="运动感受（选填）"
-        value="{{note}}"
-        bindinput="onNoteInput"
-        maxlength="100"
-        auto-height
-      />
+      <textarea class="note-input" placeholder="训练感受（选填）" value="{{note}}" bindinput="onNoteInput" maxlength="100" auto-height />
+    </view>
+
+    <view class="cal-summary" wx:if="{{totalSets > 0}}">
+      共 <text class="cal-val">{{exercises.length}}</text> 个动作 · <text class="cal-val">{{totalSets}}</text> 组
     </view>
 
     <button class="btn-primary" bindtap="save" style="margin-top: 32rpx;">保存</button>

@@ -123,21 +123,21 @@ export function addDiet(data: {
   return post<DietRecord>('/diets', data)
 }
 
-// ---- 运动 API ----
+// ---- 训练 API ----
 
-export async function getExercises(params?: { startDate?: string; endDate?: string }) {
+export async function getWorkouts(params?: { startDate?: string; endDate?: string }) {
   const qs = params ? '?' + Object.entries(params).map(([k, v]) => `${k}=${v}`).join('&') : ''
-  return get<ExerciseRecord[]>('/exercises' + qs)
+  return get<WorkoutRecord[]>('/workouts' + qs)
 }
 
-export function addExercise(data: {
-  type: string
+export function addWorkout(data: {
+  date: string
+  exercises: WorkoutExercise[]
   duration: number
   calories: number
-  date: string
   note?: string
 }) {
-  return post<ExerciseRecord>('/exercises', data)
+  return post<WorkoutRecord>('/workouts', data)
 }
 
 // ---- 目标 API ----

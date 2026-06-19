@@ -14,79 +14,105 @@
   padding: 16rpx 0;
 }
 
-.type-grid {
+.ex-index {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.ex-delete {
+  font-size: 24rpx;
+  color: var(--danger);
+}
+
+.ex-row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 16rpx;
+  margin-bottom: 16rpx;
 }
 
-.type-item {
-  padding: 12rpx 24rpx;
+.ex-name {
+  flex: 1;
+  font-size: 32rpx;
+  font-weight: 500;
+  padding: 12rpx 16rpx;
   background: var(--bg-page);
-  border-radius: 24rpx;
-  font-size: 26rpx;
-  color: var(--text-secondary);
+  border-radius: 8rpx;
 }
 
-.type-item.active {
-  background: var(--primary);
-  color: #FFFFFF;
+.ex-pick {
+  font-size: 24rpx;
+  color: var(--primary);
+  padding: 12rpx 16rpx;
+  background: var(--primary-light);
+  border-radius: 8rpx;
 }
 
-.custom-type {
-  font-size: 26rpx;
-  padding: 12rpx 0;
-  margin-top: 12rpx;
-  color: var(--text-secondary);
+.ex-nums {
+  justify-content: space-between;
 }
 
-.duration-row {
+.num-block {
+  flex: 1;
+  text-align: center;
+}
+
+.num-label {
+  font-size: 22rpx;
+  color: var(--text-hint);
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.num-stepper {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+}
+
+.num-btn {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-page);
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.num-input {
+  width: 80rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  padding: 8rpx 0;
+}
+
+.weight-input {
+  width: 120rpx;
+}
+
+.btn-add-ex {
+  margin-top: 8rpx;
+  color: var(--primary);
+  font-size: 26rpx;
+  font-weight: 500;
+  background: none;
+  border: 2rpx dashed var(--primary);
+  border-radius: 12rpx;
+  padding: 16rpx 0;
+  width: 100%;
 }
 
 .duration-input {
-  font-size: 64rpx;
-  font-weight: 700;
-  color: var(--primary);
-  width: 200rpx;
-}
-
-.duration-unit {
-  font-size: 28rpx;
-  color: var(--text-secondary);
-  margin-left: 8rpx;
-}
-
-.quick-durations {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-top: 16rpx;
-}
-
-.quick-dur {
-  padding: 8rpx 24rpx;
-  background: var(--bg-page);
-  border-radius: 24rpx;
-  font-size: 24rpx;
-  color: var(--text-secondary);
-}
-
-.quick-dur.active {
-  background: var(--primary-light);
-  color: var(--primary);
-}
-
-.cal-input {
   font-size: 36rpx;
   font-weight: 700;
   color: var(--primary);
-}
-
-.est-cal {
-  margin-top: 8rpx;
-  font-size: 24rpx;
 }
 
 .note-input {
@@ -94,4 +120,17 @@
   min-height: 80rpx;
   font-size: 28rpx;
   padding: 16rpx 0;
+}
+
+.cal-summary {
+  text-align: center;
+  font-size: 28rpx;
+  padding: 24rpx 0;
+  color: var(--text-secondary);
+}
+
+.cal-val {
+  color: var(--primary);
+  font-size: 36rpx;
+  font-weight: 700;
 }

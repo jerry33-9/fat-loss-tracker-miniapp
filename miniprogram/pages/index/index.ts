@@ -1,5 +1,5 @@
 import { today, calcBMI, weightChange, toTarget } from '../../utils/date'
-import { getWeights, getDiets, getExercises, getGoal } from '../../utils/api'
+import { getWeights, getDiets, getWorkouts, getGoal } from '../../utils/api'
 
 Page({
   data: {
@@ -29,7 +29,7 @@ Page({
       const [weights, diets, exercises, goal] = await Promise.all([
         getWeights({ limit: 30 }),
         getDiets({ date }),
-        getExercises({ startDate: date, endDate: date }),
+        getWorkouts({ startDate: date, endDate: date }),
         getGoal()
       ])
 

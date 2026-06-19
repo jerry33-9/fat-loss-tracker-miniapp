@@ -1,30 +1,35 @@
 <view class="container">
   <view class="flex-between mb-24">
     <view>共 {{totalRecords}} 条记录</view>
-    <button class="btn-outline" bindtap="goLog" size="mini">+ 记运动</button>
+    <button class="btn-outline" bindtap="goLog" size="mini">+ 记训练</button>
   </view>
 
   <block wx:for="{{groupedRecords}}" wx:key="date">
     <view class="card">
       <view class="date-header">{{item.dateLabel}}</view>
-      <view class="exercise-item flex-between" wx:for="{{item.records}}" wx:key="_id">
-        <view>
-          <view class="exercise-type">{{item.type}}</view>
-          <view class="exercise-detail text-hint">
-            {{item.duration}}分钟
-            <text wx:if="{{item.note}}"> · {{item.note}}</text>
+      <view class="workout-item" wx:for="{{item.records}}" wx:key="_id">
+        <view class="wo-exercise" wx:for="{{item.exercises}}" wx:for-item="ex" wx:for-index="exi" wx:key="name">
+          <view class="wo-ex-row flex-between">
+            <view>
+              <text class="wo-ex-name">{{ex.name}}</text>
+              <text class="wo-ex-detail text-hint" wx:if="{{ex.sets > 0}}">{{ex.sets}}组×{{ex.reps}}次</text>
+              <text class="wo-ex-detail text-hint" wx:if="{{ex.weight}}">{{ex.weight}}kg</text>
+            </view>
           </view>
         </view>
-        <view class="exercise-cal">{{item.calories}} kcal</view>
+        <view class="wo-footer flex-between" wx:if="{{item.duration > 0 || item.note}}">
+          <view class="wo-note text-hint" wx:if="{{item.note}}">{{item.note}}</view>
+          <view class="wo-dur" wx:if="{{item.duration > 0}}">{{item.duration}}分钟</view>
+        </view>
       </view>
-      <view class="date-summary" wx:if="{{item.totalCalories > 0}}">
-        合计消耗 <text class="summary-val">{{item.totalCalories}}</text> kcal
+      <view class="date-summary">
+        {{item.exerciseCount}} 个动作 · {{item.totalSets}} 组 · {{item.totalCalories}} kcal
       </view>
     </view>
   </block>
 
   <view class="empty-state" wx:if="{{totalRecords === 0}}">
-    <text>还没有运动记录</text>
-    <button class="btn-primary mt-24" bindtap="goLog">记录运动</button>
+    <text>还没有训练记录</text>
+    <button class="btn-primary mt-24" bindtap="goLog">开始记录</button>
   </view>
 </view>

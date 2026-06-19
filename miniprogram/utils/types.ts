@@ -23,14 +23,21 @@ interface FoodItem {
   calories: number
 }
 
-/** 运动记录 */
-interface ExerciseRecord {
+/** 训练记录 */
+interface WorkoutRecord {
   _id?: string
-  type: string
+  date: string
+  exercises: WorkoutExercise[]
   duration: number
   calories: number
-  date: string
   note?: string
+}
+
+interface WorkoutExercise {
+  name: string
+  sets: number
+  reps: number
+  weight?: number
 }
 
 /** 用户目标 */

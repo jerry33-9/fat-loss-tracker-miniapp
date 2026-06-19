@@ -1,65 +1,88 @@
 import { today, formatDate } from '../../../utils/date'
-import { addExercise } from '../../../utils/api'
+import { addWorkout } from '../../../utils/api'
 
-const CAL_PER_MIN: Record<string, number> = {
-  '跑步': 10, '快走': 5, '游泳': 8, '骑行': 7,
-  '跳绳': 11, '力量训练': 6, '瑜伽': 4, 'HIIT': 12,
-  '椭圆机': 7, '划船机': 8
+interface ExItem {
+  name: string
+  sets: number
+  reps: number
+  weight?: number
+  moveIndex: number
 }
 
 Page({
   data: {
     date: today(),
     dateLabel: '',
-    commonTypes: ['跑步', '快走', '游泳', '骑行', '跳绳', '力量训练', '瑜伽', 'HIIT'],
-    exerciseType: '跑步',
-    customType: '',
+    commonMoves: ['卧推', '深蹲', '硬拉', '引体向上', '划船', '推举', '弯举', '臂屈伸', '卷腹', '平板支撑'],
+    exercises: [
+      { name: '', sets: 3, reps: 10, weight: 0, moveIndex: -1 }
+    ] as ExItem[],
     duration: '',
-    calories: '',
-    estCalories: 0,
-    quickDurations: [15, 20, 30, 45, 60, 90],
-    selectedDur: 0,
-    note: ''
+    note: '',
+    totalSets: 0
   },
 
   onLoad() {
     const d = today()
     this.setData({ date: d, dateLabel: formatDate(d) })
+    this.calcTotal()
   },
 
   onDateChange(e: any) {
     this.setData({ date: e.detail.value, dateLabel: formatDate(e.detail.value) })
   },
 
-  selectType(e: any) {
-    this.setData({ exerciseType: e.currentTarget.dataset.type, customType: '' }, () => this.estimate())
+  addExercise() {
+    this.setData({
+      exercises: [...this.data.exercises, { name: '', sets: 3, reps: 10, weight: 0, moveIndex: -1 }]
+    }, () => this.calcTotal())
   },
 
-  onCustomType(e: any) {
-    this.setData({ customType: e.detail.value, exerciseType: '' }, () => this.estimate())
+  removeExercise(e: any) {
+    const idx = e.currentTarget.dataset.index
+    if (this.data.exercises.length <= 1) return
+    const exercises = this.data.exercises.filter((_, i) => i !== idx)
+    this.setData({ exercises }, () => this.calcTotal())
   },
 
-  getEffectiveType(): string {
-    return this.data.customType || this.data.exerciseType
+  onMovePick(e: any) {
+    const idx = e.currentTarget.dataset.index
+    const moveIdx = Number(e.detail.value)
+    const exercises = [...this.data.exercises]
+    exercises[idx] = {
+      ...exercises[idx],
+      name: this.data.commonMoves[moveIdx],
+      moveIndex: moveIdx
+    }
+    this.setData({ exercises })
+  },
+
+  onExChange(e: any) {
+    const { index, field } = e.currentTarget.dataset
+    let value: any = e.detail.value
+    if (field === 'sets' || field === 'reps') value = Number(value) || 0
+    if (field === 'weight') value = Number(value) || undefined
+    const exercises = [...this.data.exercises]
+    exercises[index] = { ...exercises[index], [field]: value, moveIndex: -1 }
+    this.setData({ exercises }, () => this.calcTotal())
+  },
+
+  adjustNum(e: any) {
+    const { index, field, delta } = e.currentTarget.dataset
+    const exercises = [...this.data.exercises]
+    const cur = exercises[index][field as keyof ExItem] as number
+    const val = Math.max(0, (cur || 0) + Number(delta))
+    exercises[index] = { ...exercises[index], [field]: val, moveIndex: -1 }
+    this.setData({ exercises }, () => this.calcTotal())
+  },
+
+  calcTotal() {
+    const totalSets = this.data.exercises.reduce((sum, ex) => sum + (ex.sets || 0), 0)
+    this.setData({ totalSets })
   },
 
   onDurationInput(e: any) {
-    this.setData({ duration: e.detail.value, selectedDur: 0 }, () => this.estimate())
-  },
-
-  setDuration(e: any) {
-    const dur = e.currentTarget.dataset.dur
-    this.setData({ duration: String(dur), selectedDur: dur }, () => this.estimate())
-  },
-
-  estimate() {
-    const dur = Number(this.data.duration) || 0
-    const rate = CAL_PER_MIN[this.getEffectiveType()] || 6
-    this.setData({ estCalories: Math.round(dur * rate) })
-  },
-
-  onCalInput(e: any) {
-    this.setData({ calories: e.detail.value })
+    this.setData({ duration: e.detail.value })
   },
 
   onNoteInput(e: any) {
@@ -67,17 +90,25 @@ Page({
   },
 
   async save() {
-    const type = this.getEffectiveType()
-    const duration = Number(this.data.duration)
-    let calories = Number(this.data.calories)
-
-    if (!type) { wx.showToast({ title: '请选择运动类型', icon: 'none' }); return }
-    if (!duration || duration <= 0) { wx.showToast({ title: '请输入运动时长', icon: 'none' }); return }
-    if (!calories) { calories = this.data.estCalories }
+    const valid = this.data.exercises.filter(ex => ex.name.trim())
+    if (valid.length === 0) {
+      wx.showToast({ title: '请至少填写一个动作名称', icon: 'none' })
+      return
+    }
 
     wx.showLoading({ title: '保存中...' })
     try {
-      await addExercise({ type, duration, calories, date: this.data.date, note: this.data.note })
+      const exercises = valid.map(ex => ({
+        name: ex.name.trim(),
+        sets: ex.sets || 0,
+        reps: ex.reps || 0,
+        weight: ex.weight || undefined
+      }))
+
+      const duration = Number(this.data.duration) || 0
+      const calories = Math.round(duration * 6) // 粗略估算
+
+      await addWorkout({ date: this.data.date, exercises, duration, calories, note: this.data.note })
       wx.showToast({ title: '已保存', icon: 'success' })
       setTimeout(() => wx.navigateBack(), 1500)
     } catch (e) {
